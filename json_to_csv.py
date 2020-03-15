@@ -32,13 +32,7 @@ def run_mvn_analysis(project_key, dir):
     elif os.path.isfile('build.gradle'):
         os.system("gradlew")
         os.system("gradle sonarqube -Dsonar.projectKey=%s -Dsonar.host.url=http://localhost:9000" %project_key)
-    #os.system("gradlew")
-    #p = subprocess.Popen(["mvn sonar:sonar -Dsonar.projectKey=%s -Dsonar.host.url=http://localhost:9000" %project_key], cwd=dir)
-    #p.wait()
-    #os.system("mvn sonar:sonar -Dsonar.projectKey=%s -Dsonar.host.url=http://localhost:9000" %project_key)
-    #os.system("gradlew")
-    #os.system("mkdir /tmp/empty")
-    # -Dsonar.java.binaries=/tmp/empty
+
     
 
 def to_string(s):
@@ -57,7 +51,6 @@ def reduce_item(key, value):
         i=0
         for sub_item in value:
             reduce_item(key+'_'+to_string(i), sub_item)
-            #reduce_item('', sub_item)
             i=i+1
 
     #Reduction Condition 2
@@ -65,7 +58,6 @@ def reduce_item(key, value):
         sub_keys = value.keys()
         for sub_key in sub_keys:
             reduce_item(key+'_'+to_string(sub_key), value[sub_key])
-            #reduce_item('', value[sub_key])
     
     #Base Condition
     else:
@@ -91,15 +83,7 @@ if __name__ == "__main__":
         if not os.path.exists("results"):
              os.makedirs("results")
         os.chdir("results")
-        #try:
-         #   os.makedirs("results")
-          #  os.chdir("results")
-        #except OSError:
-         #   print ("Creation of the directory results failed")
-        #else:
-         #   print ("Successfully created the directory results")
-		
-        #Reading arguments
+
         node = sys.argv[1]
         URL = "http://localhost:9000/api/issues/search?componentRoots=" + sys.argv[2]
         response_data = requests.get(url = URL);
@@ -121,14 +105,12 @@ if __name__ == "__main__":
 
         processed_data = []
         header = []
-        print ("###############")
-        #print (response_data)
-        print ("###############")
+
         myheader = ["_creationDate", "_hash", "_type", "_squid", "_component", "_severity", "_startLine", "_endLine", "_status", "_message", "_effort", "_debt"]
         for item in data_to_be_processed:
             my_item = {}
             my_item["creationDate"] = item["creationDate"]
-            #print(item)
+
             if "hash" in item:
                my_item["hash"] = item["hash"]
             my_item["type"] = item["type"]
@@ -152,15 +134,13 @@ if __name__ == "__main__":
             reduce_item('', my_item)
 
             header += reduced_item.keys()
-    
-            #print("###########")
-            #print("&&&&&&&&&&&&&&&&&&&")
+
             processed_data.append(reduced_item)
 
         header = list(set(myheader))
         print (header)
         print (processed_data)
-
+d
 
         with open(csv_file_path, 'w+') as f:
             writer = csv.DictWriter(f, header, quoting=csv.QUOTE_ALL)
