@@ -4,15 +4,9 @@ import csv
 import time
 import requests
 import os
-#from shutil import rmtree
 import shutil, sys
 import os.path
  
-#import subprocess
-##
-# Convert to string keeping encoding in mind...
-##
-
 
 # To create sonarqube project key
 def create_project_key(key_name, project_name):
@@ -20,19 +14,12 @@ def create_project_key(key_name, project_name):
     api_response = requests.post( url)
     print (api_response.text)
 
-def clone_gitRepo(url):
+def cloneGitRepo(url):
     os.system("git clone %s" %url)
     str = (url.split("/"))[len(url.split("/")) - 1]
     if (str == ""):
         str = (url.split("/"))[len(url.split("/")) - 2]
-    if os.path.exists('./'+str):
-        #shutil.rmtree('./'+str)
-        #os.system('rmdir /S /Q "{}"'.format(str))
-        #os.system("git clone %s" %url)
-        return str
-    else:
-        #os.system("git clone %s" %url)
-        return str
+    return str
 
 def run_mvn_analysis(project_key, dir):
     print("check dir")
@@ -90,7 +77,7 @@ if __name__ == "__main__":
         print ("\nUsage: python json_to_csv.py <node_name> <json_in_file_path> <csv_out_file_path>\n")
     else:
         #Clone project to be analyzed
-        dir_name = clone_gitRepo(sys.argv[3])
+        dir_name = cloneGitRepo(sys.argv[3])
         print("directory name is*************")
         print(dir_name)
         #Create sonarqube project_name
