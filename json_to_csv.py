@@ -107,7 +107,6 @@ if __name__ == "__main__":
              json.dump(response_data.json(), outfile)
         json_file_path = dir_name+".json"
         print(json_file_path)
-        #csv_file_path = sys.argv[3]
         csv_file_path = dir_name + ".csv"
         print(csv_file_path)
         fp = open(json_file_path, 'r')
@@ -147,13 +146,13 @@ if __name__ == "__main__":
                 my_item["effort"] = item["effort"]
             if "debt" in item:
                 my_item["debt"] = item["debt"]
-            #print(my_item)
+
 			
             reduced_item = {}
             reduce_item('', my_item)
 
             header += reduced_item.keys()
-            #print(header)
+    
             #print("###########")
             #print("&&&&&&&&&&&&&&&&&&&")
             processed_data.append(reduced_item)
@@ -161,7 +160,7 @@ if __name__ == "__main__":
         header = list(set(myheader))
         print (header)
         print (processed_data)
-        #header.sort()
+
 
         with open(csv_file_path, 'w+') as f:
             writer = csv.DictWriter(f, header, quoting=csv.QUOTE_ALL)
